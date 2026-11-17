@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Calculadora de patrimonio · Hábito Financiero</title>
+<meta name="description" content="Calcula tu patrimonio neto: lo que tienes menos lo que debes. Gratis, sin registro y sin guardar tus datos.">
+<meta property="og:title" content="¿Cuál es tu patrimonio neto?">
+<meta property="og:description" content="Activos menos pasivos, en un día concreto. Privado, corre en tu navegador.">
+<meta name="theme-color" content="#0B1D3A">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230B1D3A'/><text x='50' y='68' font-size='56' text-anchor='middle'>🏞️</text></svg>">
+<style>
+:root{
+  --bg:#DDE3EC; --card:#fff; --surface:#f8fafc; --navy:#0B1D3A; --navy2:#0a1628;
+  --wine:#9B2335; --red:#c0293f; --teal:#1f8a75; --mint:#33C5A5; --amber:#d97706;
+  --text:#0B1D3A; --muted:#64748b; --line:#e2e8f0; --line2:#cbd5e1; --pale:#e8edf4;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.45}
+p{margin:0}
+.wrap{max-width:1040px;margin:0 auto;padding:0 18px}
+.hero{background:linear-gradient(160deg,var(--navy2),var(--navy) 60%,#16305a);color:#fff;padding:34px 0 86px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;opacity:.95;font-size:15px}
+.brand i{font-style:normal;background:#fff1;border-radius:10px;padding:5px 8px}
+.pill{display:inline-block;margin-top:26px;background:#ffffff1c;border:1px solid #ffffff33;border-radius:999px;padding:5px 12px;font-size:13px;font-weight:600}
+h1{font-size:clamp(28px,5.4vw,46px);line-height:1.08;margin:14px 0 12px;font-weight:900;letter-spacing:-.02em;max-width:720px}
+h1 em{font-style:normal;color:var(--mint)}
+.sub{font-size:clamp(15px,2.4vw,18px);color:#cdd9ea;max-width:620px}
+main{margin-top:-58px;padding-bottom:40px}
+.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;align-items:start}
+@media(max-width:860px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border-radius:18px;padding:22px;box-shadow:0 4px 20px rgba(11,29,58,.09)}
+.card h2{margin:0 0 4px;font-size:19px;font-weight:800}
+.card .hint{color:var(--muted);font-size:14px;margin-bottom:14px}
+.banner{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:#fff7e6;border:1px solid #f6d58f;color:#7a4b00;border-radius:12px;padding:10px 14px;font-size:14px;margin-bottom:16px}
+.btn{font:inherit;font-weight:700;border:0;border-radius:12px;padding:11px 16px;cursor:pointer;background:var(--wine);color:#fff}
+.btn.ghost{background:var(--pale);color:var(--navy)}
+.btn.sm{padding:7px 12px;font-size:13px}
+.btn:active{transform:scale(.98)}
+.grp{margin:20px 0 4px;font-weight:800;font-size:13px;letter-spacing:.04em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.grp .tot{margin-left:auto;text-transform:none;letter-spacing:0;font-size:14px}
+.gdesc{color:var(--muted);font-size:12.5px;margin-bottom:4px}
+.dot{width:12px;height:12px;border-radius:4px;display:inline-block;flex:none}
+.row{display:grid;grid-template-columns:34px 1fr 150px;gap:10px;align-items:center;padding:6px 0}
+.row .e{font-size:22px;text-align:center}
+.row label{font-size:15px}
+.row small{display:block;color:var(--muted);font-size:12px}
+.money{position:relative}
+.money span{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-weight:600}
+.money input{width:100%;font:inherit;font-weight:700;text-align:right;padding:10px 12px 10px 26px;border:1.5px solid var(--line);border-radius:10px;background:var(--surface);color:var(--text)}
+.money input:focus{outline:0;border-color:var(--wine);box-shadow:0 0 0 3px #9b233522;background:#fff}
+@media(max-width:480px){.row{grid-template-columns:28px 1fr 120px}.row small{display:none}}
+.sticky{position:sticky;top:12px}
+@media(max-width:860px){.sticky{position:static}}
+.big{font-size:clamp(40px,8vw,58px);font-weight:900;letter-spacing:-.03em;line-height:1}
+.big.pos{color:var(--teal)} .big.neg{color:var(--red)}
+.chip{display:inline-block;border-radius:999px;padding:4px 11px;font-size:13px;font-weight:800;margin:8px 0 14px;color:#fff}
+.eq{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;text-align:center;margin:6px 0 14px}
+.eq .b{background:var(--surface);border-radius:12px;padding:10px 6px}
+.eq .b small{display:block;color:var(--muted);font-weight:600;font-size:12.5px}
+.eq .b strong{font-size:clamp(16px,3.6vw,20px);font-weight:900}
+.eq .o{font-size:22px;font-weight:900;color:var(--wine)}
+.hb{margin:8px 0}
+.hb .l{display:flex;justify-content:space-between;font-size:13.5px;font-weight:700;margin-bottom:3px}
+.hb .t{height:22px;background:var(--pale);border-radius:8px;overflow:hidden}
+.hb .t i{display:block;height:100%;border-radius:8px;transition:width .4s}
+.note{font-size:12.5px;color:var(--muted);margin-top:12px}
+.illus{background:var(--surface);border-radius:10px;padding:8px 10px}
+.sim{margin-top:18px}
+input[type=range]{width:100%;accent-color:var(--wine);height:30px}
+.rangeVal{display:flex;justify-content:space-between;font-weight:800}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
+@media(max-width:560px){.kpis{grid-template-columns:1fr}}
+.kpi{background:var(--surface);border-radius:12px;padding:12px}
+.kpi small{color:var(--muted);font-size:12.5px;display:block}
+.kpi b{font-size:20px;font-weight:900}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:#334155}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+svg{width:100%;height:auto;display:block}
+.tips{margin-top:18px}
+.tips ul{margin:8px 0 0;padding-left:20px;font-size:14.5px}
+.tips li{margin:6px 0}
+.cta{margin-top:18px;background:var(--navy);color:#fff;border-radius:18px;padding:24px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.cta h3{margin:0 0 4px;font-size:20px}
+.cta p{color:#cdd9ea;font-size:14.5px;max-width:560px}
+.cta a{background:var(--wine);color:#fff;text-decoration:none;font-weight:800;border-radius:12px;padding:12px 18px}
+footer{color:#475569;font-size:12.5px;padding:6px 0 30px;text-align:center}
+.mbar{display:none}
+@media(max-width:860px){
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:8;background:var(--navy);color:#fff;padding:10px 16px calc(10px + env(safe-area-inset-bottom));align-items:center;justify-content:space-between;gap:10px;box-shadow:0 -4px 18px rgba(11,29,58,.3)}
+  .mbar small{display:block;color:#cdd9ea;font-size:12px}
+  .mbar b{font-size:22px;font-weight:900}
+  .mbar a{background:var(--wine);color:#fff;text-decoration:none;font-weight:800;border-radius:10px;padding:10px 14px;font-size:14px;white-space:nowrap}
+  body{padding-bottom:78px}
+  .toast{bottom:92px}
+}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(80px);background:var(--navy);color:#fff;padding:10px 16px;border-radius:12px;font-weight:700;transition:transform .3s;z-index:9}
+.toast.on{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <div class="brand"><i>🌱</i> Hábito Financiero</div>
+  <span class="pill">Herramienta del kit · Cápsula 5</span>
+  <h1>¿Cuál es tu <em>patrimonio neto</em> hoy?</h1>
+  <p class="sub">Anota lo que tienes y lo que debes. La calculadora resta, evita contar dos veces y te muestra cómo cambiaría si sumas un aporte cada mes. Sin registro.</p>
+</div></header>
+
+<main class="wrap">
+<div class="grid">
+  <section class="card" id="inputs">
+    <div class="banner" id="banner"><span>👩‍💼 Estás viendo el patrimonio de <b>Camila</b> (personaje y cifras <b>ilustrativas</b>, no reales).</span><button class="btn sm" id="clear">Usar mis números</button></div>
+    <h2>1. Tu foto financiera</h2>
+    <p class="hint">Es una foto de un día concreto. Si un monto no aplica, déjalo en 0.</p>
+
+    <div class="grp"><span class="dot" style="background:var(--teal)"></span> Activos: lo que tienes <span class="tot" id="t_act">$0</span></div>
+    <p class="gdesc">Anótalos a <b>precio de venta</b> (lo que podrías vender hoy), no a lo que pagaste.</p>
+    <div class="row"><div class="e">💵</div><label for="cuentas">Efectivo y cuentas</label><div class="money"><span>$</span><input id="cuentas" inputmode="numeric" autocomplete="off"></div></div>
+    <div class="row"><div class="e">🏝️</div><div><label for="ahorros">Ahorros y fondos</label><small>Incluye tu ahorro para metas</small></div><div class="money"><span>$</span><input id="ahorros" inputmode="numeric" autocomplete="off"></div></div>
+    <div class="row"><div class="e">📈</div><label for="inversiones">Inversiones</label><div class="money"><span>$</span><input id="inversiones" inputmode="numeric" autocomplete="off"></div></div>
+    <div class="row"><div class="e">🏠</div><div><label for="propiedades">Propiedades</label><small>Valor de venta, no de compra</small></div><div class="money"><span>$</span><input id="propiedades" inputmode="numeric" autocomplete="off"></div></div>
+    <div class="row"><div class="e">🚗</div><label for="vehiculo">Vehículo</label><div class="money"><span>$</span><input id="vehiculo" inputmode="numeric" autocomplete="off"></div></div>
+    <div class="row"><div class="e">💻</div><div><label for="bienes">Bienes personales</label><small>Notebook, celular, etc., a valor de venta</small></div><div class="money"><span>$</span><input id="bienes" inputmode="numeric" autocomplete="off"></div></div>
+    <div class="row"><div class="e">➕</div><label for="otroact">Otros activos</label><div class="money"><span>$</span><input id="otroact" inputmode="numeric" autocomplete="off"></div></div>
+
+    <div class="grp"><span class="dot" style="background:var(--wine)"></span> Pasivos: lo que debes <span class="tot" id="t_pas">$0</span></div>
+    <p class="gdesc">Incluye <b>todas</b> tus deudas, con el saldo que debes hoy.</p>
+    <div class="row"><div class="e">💳</div><label for="tarjeta">Tarjeta de crédito</label><div class="money"><span>$</span><input id="tarjeta" inputmode="numeric" autocomplete="off"></div></div>
+    <div class="row"><div class="e">🏦</div><label for="linea">Línea de crédito</label><div class="money"><span>$</span><input id="linea" inputmode="numeric" autocomplete="off"></div></div>
+    <div class="row"><div class="e">🛍️</div><label for="consumo">Crédito de consumo</label><div class="money"><span>$</span><input id="consumo" inputmode="numeric" autocomplete="off"></div></div>
+    <div class="row"><div class="e">🏡</div><label for="hipoteca">Crédito hipotecario</label><div class="money"><span>$</span><input id="hipoteca" inputmode="numeric" autocomplete="off"></div></div>
+    <div class="row"><div class="e">🚙</div><label for="auto">Crédito automotriz</label><div class="money"><span>$</span><input id="auto" inputmode="numeric" autocomplete="off"></div></div>
+    <div class="row"><div class="e">➕</div><label for="otropas">Otras deudas</label><div class="money"><span>$</span><input id="otropas" inputmode="numeric" autocomplete="off"></div></div>
+  </section>
+
+  <aside class="card sticky" id="result" aria-live="polite">
+    <h2>2. Tu patrimonio neto</h2>
+    <p class="hint">Lo que tienes menos lo que debes, hoy.</p>
+    <div class="big" id="neto">$0</div>
+    <span class="chip" id="chip">—</span>
+    <div class="eq"><div class="b"><small>Activos</small><strong id="eA" style="color:var(--teal)">$0</strong></div><div class="o">−</div><div class="b"><small>Pasivos</small><strong id="eP" style="color:var(--wine)">$0</strong></div></div>
+    <div class="hb"><div class="l"><span>🟢 Activos</span><span id="hA">$0</span></div><div class="t"><i id="bA" style="background:var(--teal);width:0"></i></div></div>
+    <div class="hb"><div class="l"><span>🔴 Pasivos</span><span id="hP">$0</span></div><div class="t"><i id="bP" style="background:var(--wine);width:0"></i></div></div>
+    <p class="note" id="deuda"></p>
+    <p class="note illus">ℹ️ <b>Resultados ilustrativos:</b> dependen de los datos que ingreses y no son asesoría financiera.</p>
+  </aside>
+</div>
+
+<section class="card sim">
+  <h2>3. ¿Y si sumas un aporte cada mes?</h2>
+  <p class="hint">Mueve la barra para ver cómo crece tu patrimonio en 12 meses con ese aporte mensual.</p>
+  <div class="rangeVal"><span>Aporte mensual</span><span id="rv">$100.000</span></div>
+  <input type="range" id="aporte" min="0" max="500000" step="10000" value="100000" aria-label="Aporte mensual">
+  <div class="kpis">
+    <div class="kpi"><small>Hoy</small><b id="k0">$0</b></div>
+    <div class="kpi"><small>En 6 meses</small><b id="k6">$0</b></div>
+    <div class="kpi"><small>En 12 meses</small><b id="k12">$0</b></div>
+  </div>
+  <div class="legend" style="margin-top:6px"><span><span class="dot" style="background:#1f8a75"></span>Con aporte</span><span><span class="dot" style="background:#64748b"></span>Sin aporte (línea punteada)</span></div>
+  <div id="chart"></div>
+  <p class="note">Proyección simple: patrimonio actual + aporte × meses, <b>sin rentabilidad</b> ni inflación. Es una simulación <b>ilustrativa</b> para ver el efecto, no una promesa.</p>
+</section>
+
+<section class="card tips">
+  <h2>4. Cuida estos detalles</h2>
+  <ul>
+    <li>Valora a <b>precio de venta</b>, no al de compra.</li>
+    <li>No cuentes <b>dos veces</b> el mismo dinero (por ejemplo, el ahorro de una meta y la cuenta donde está).</li>
+    <li>Incluye <b>todas</b> tus deudas.</li>
+    <li>Pagar una deuda con tu ahorro <b>no cambia</b> tu patrimonio, pero te ahorra intereses.</li>
+    <li>Un patrimonio negativo <b>no es una sentencia</b>: lo importante es la dirección. Repite tu foto cada 3 o 6 meses y compárala.</li>
+  </ul>
+</section>
+
+<section class="cta">
+  <div><h3>Ya tienes tu foto financiera</h3><p>Esta herramienta es parte del <b>Kit para reducir el estrés financiero</b>. Síguenos para recibir el curso y las siguientes herramientas.</p></div>
+  <a href="https://www.instagram.com/tuhabitofinanciero_/" target="_blank" rel="noopener">@tuhabitofinanciero_</a>
+</section>
+<div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:14px"><button class="btn" id="copy">📋 Copiar mi resumen</button><button class="btn ghost" id="share">Compartir esta herramienta</button></div>
+</main>
+
+<footer class="wrap"><p>🔒 Todo se calcula en tu navegador: no enviamos ni guardamos tus datos. Los resultados y ejemplos son ilustrativos. Herramienta educativa; no constituye asesoría financiera personalizada.</p></footer>
+<div class="mbar" id="mbar"><div><small>Tu patrimonio neto</small><b id="mval">$0</b></div><a href="#result">Ver resultado ↓</a></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+const ACT = ['cuentas','ahorros','inversiones','propiedades','vehiculo','bienes','otroact'];
+const PAS = ['tarjeta','linea','consumo','hipoteca','auto','otropas'];
+const IDS = [...ACT, ...PAS];
+const EJEMPLO = {cuentas:400000,ahorros:300000,bienes:500000,tarjeta:300000,linea:200000,consumo:150000};
+const fmt = n => (n < 0 ? '-$' : '$') + Math.abs(Math.round(n)).toLocaleString('es-CL');
+const val = id => parseInt(($(id).value || '').replace(/\D/g, ''), 10) || 0;
+let ejemploActivo = true;
+
+function setVal(id, n){ $(id).value = n ? n.toLocaleString('es-CL') : ''; }
+function loadExample(){ IDS.forEach(i => setVal(i, EJEMPLO[i] || 0)); ejemploActivo = true; $('banner').style.display = 'flex'; render(); }
+
+IDS.forEach(id => {
+  $(id).addEventListener('input', e => {
+    const el = e.target, before = el.value.slice(0, el.selectionStart).replace(/\D/g, '').length;
+    const n = parseInt(el.value.replace(/\D/g, ''), 10) || 0;
+    el.value = n ? n.toLocaleString('es-CL') : '';
+    let pos = 0, seen = 0;
+    while (pos < el.value.length && seen < before) { if (/\d/.test(el.value[pos])) seen++; pos++; }
+    el.setSelectionRange(pos, pos);
+    if (ejemploActivo) { ejemploActivo = false; $('banner').style.display = 'none'; }
+    render();
+  });
+});
+$('clear').onclick = () => { IDS.forEach(i => $(i).value = ''); ejemploActivo = false; $('banner').style.display = 'none'; render(); $('cuentas').focus(); };
+$('aporte').addEventListener('input', render);
+let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(render, 150); });
+
+let shown = 0, raf;
+function countTo(target){
+  cancelAnimationFrame(raf); const from = shown, t0 = performance.now();
+  const step = t => { const k = Math.min(1, (t - t0) / 500), e = 1 - Math.pow(1 - k, 3);
+    shown = from + (target - from) * e; $('neto').textContent = fmt(shown); if (k < 1) raf = requestAnimationFrame(step); else shown = target; };
+  raf = requestAnimationFrame(step);
+}
+const totals = () => { const a = ACT.reduce((s, i) => s + val(i), 0), p = PAS.reduce((s, i) => s + val(i), 0); return {a, p, n: a - p}; };
+
+function render(){
+  const {a, p, n} = totals(), ap = +$('aporte').value;
+  $('t_act').textContent = fmt(a); $('t_pas').textContent = fmt(p);
+  countTo(n); $('neto').className = 'big ' + (n >= 0 ? 'pos' : 'neg');
+  $('mval').textContent = fmt(n); $('mval').style.color = n < 0 ? '#ff8a99' : '#fff';
+  let lab, col;
+  if (!a && !p) { lab = 'Ingresa tus montos'; col = '#64748b'; }
+  else if (n < 0) { lab = 'Hoy debes más de lo que tienes'; col = 'var(--red)'; }
+  else if (n === 0) { lab = 'En equilibrio'; col = 'var(--amber)'; }
+  else { lab = 'Tienes más de lo que debes'; col = 'var(--teal)'; }
+  $('chip').textContent = lab; $('chip').style.background = col;
+  $('eA').textContent = fmt(a); $('eP').textContent = fmt(p); $('hA').textContent = fmt(a); $('hP').textContent = fmt(p);
+  const mx = Math.max(a, p) || 1; $('bA').style.width = a / mx * 100 + '%'; $('bP').style.width = p / mx * 100 + '%';
+  $('deuda').textContent = p && a ? `Tus deudas equivalen al ${Math.round(p / a * 100)}% de lo que tienes.` : '';
+
+  $('rv').textContent = fmt(ap);
+  $('k0').textContent = fmt(n); $('k6').textContent = fmt(n + ap * 6); $('k12').textContent = fmt(n + ap * 12);
+  chart(n, ap);
+}
+
+function chart(n, ap){
+  const sm = window.innerWidth < 560, W = sm ? 340 : 640, H = sm ? 250 : 240, L = sm ? 62 : 54, R = 14, T = 16, B = 30, fs = sm ? 12.5 : 11;
+  const ys = [0, n, n + ap * 12];
+  let lo = Math.min(...ys), hi = Math.max(...ys); if (hi === lo) hi = lo + 1;
+  const pad = (hi - lo) * .12; lo -= lo < 0 ? pad : 0; hi += pad;
+  const X = m => L + (W - L - R) * m / 12, Y = v => T + (H - T - B) * (1 - (v - lo) / (hi - lo));
+  const pts = s => Array.from({length: 13}, (_, m) => `${X(m).toFixed(1)},${Y(n + s * m).toFixed(1)}`).join(' ');
+  const grid = [0, .5, 1].map(k => { const v = lo + (hi - lo) * k; return `<line x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}" stroke="#e2e8f0"/><text x="${L - 6}" y="${Y(v) + 4}" text-anchor="end" font-size="${fs}" fill="#64748b">${fmtShort(v)}</text>`; }).join('');
+  const xs = (sm ? [0, 6, 12] : [0, 3, 6, 9, 12]).map(m => `<text x="${X(m)}" y="${H - 8}" text-anchor="${m === 12 ? 'end' : m === 0 ? 'start' : 'middle'}" font-size="${fs}" fill="#64748b">${m ? 'mes ' + m : 'hoy'}</text>`).join('');
+  const zero = lo < 0 ? `<line x1="${L}" x2="${W - R}" y1="${Y(0)}" y2="${Y(0)}" stroke="#94a3b8" stroke-dasharray="4 3"/>` : '';
+  $('chart').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Patrimonio proyectado a 12 meses">${grid}${zero}${xs}
+    <polyline points="${pts(0)}" fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="6 4"/>
+    <polyline points="${pts(ap)}" fill="none" stroke="#1f8a75" stroke-width="3.5" stroke-linecap="round"/>
+    <circle cx="${X(12)}" cy="${Y(n + ap * 12)}" r="5" fill="#1f8a75"/><circle cx="${X(12)}" cy="${Y(n)}" r="4" fill="#64748b"/></svg>`;
+}
+function fmtShort(n){ const a = Math.abs(n), s = n < 0 ? '-' : ''; return a >= 1e6 ? s + '$' + (a / 1e6).toFixed(1).replace('.', ',') + ' M' : a >= 1e3 ? s + '$' + Math.round(a / 1e3) + ' mil' : s + '$' + Math.round(a); }
+
+function toast(m){ const t = $('toast'); t.textContent = m; t.classList.add('on'); setTimeout(() => t.classList.remove('on'), 2200); }
+$('copy').onclick = async () => {
+  const {a, p, n} = totals();
+  const txt = `Mi patrimonio neto es ${fmt(n)} (activos ${fmt(a)} − pasivos ${fmt(p)}). Calcula el tuyo: ${location.href.split('#')[0]}`;
+  try { await navigator.clipboard.writeText(txt); toast('Resumen copiado'); } catch { toast('No se pudo copiar'); }
+};
+$('share').onclick = async () => {
+  const data = {title: '¿Cuál es tu patrimonio neto?', text: 'Calcula tu patrimonio: lo que tienes menos lo que debes.', url: location.href.split('#')[0]};
+  if (navigator.share) { try { await navigator.share(data); } catch {} } else { try { await navigator.clipboard.writeText(data.url); toast('Enlace copiado'); } catch { toast(data.url); } }
+};
+loadExample();
+</script>
+</body>
+</html>
